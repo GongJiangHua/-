@@ -11,7 +11,7 @@ type RegisterControllers struct {
 	beego.Controller
 }
 
-func (r *RegisterControllers) Get() {
+func (r *RegisterControllers) Post() {
 
 	//1.解析用户提交的请求数据
 	var User models.User

@@ -58,18 +58,17 @@ func AddUser(u models.User)(int64, error){
 }
 
 //登录页面用户登录进行数据查询
-func QueryUser(u models.Userlogin)(int,error ) {
-	//1、将密码进行hash计算，得到密码hash值，然后进行比较
+func QueryUser(u models.User)(*models.User,error ) {
 	md5Hash := md5.New()
 	md5Hash.Write([]byte(u.Password))
 	psswordBytes := md5Hash.Sum(nil)
 	u.Password = hex.EncodeToString(psswordBytes)
-	row :=Db.QueryRow("select password from user_message where use_phone = ?",
-		u.Phone)
-	var password int
-	err := row.Scan(&password)
+	row :=Db.QueryRow("select user_phone from user_message where user_phone = ? and user_pwd = ?",
+		u.Phone,u.Password)
+	err := row.Scan(&u.Password)
 	if err!=nil {
-		return 0,err
+		return nil,err
 	}
-	return password,nil
+
+	return &u,nil
 }
