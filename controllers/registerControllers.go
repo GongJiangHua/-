@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"DataCertPlatform/db_mysql"
 	"DataCertPlatform/models"
 	"fmt"
 	"github.com/astaxie/beego"
@@ -10,6 +9,7 @@ import (
 type RegisterControllers struct {
 	beego.Controller
 }
+
 
 func (r *RegisterControllers) Post() {
 
@@ -22,7 +22,7 @@ func (r *RegisterControllers) Post() {
 	}
 	//2.将解析到的数据保存到数据库中
 	fmt.Println(User)
-	row,err :=db_mysql.AddUser(User)
+	row,err :=User.AddUser()
 	if err !=nil{
 		r.Ctx.WriteString("数据库存储用户信息失败！！")
 		return
