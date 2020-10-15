@@ -6,12 +6,12 @@ import (
 	"github.com/astaxie/beego"
 )
 
-type RegisterControllers struct {
+type RegisterController struct {
 	beego.Controller
 }
 
 
-func (r *RegisterControllers) Post() {
+func (r *RegisterController) Post() {
 
 	//1.解析用户提交的请求数据
 	var User models.User
@@ -37,7 +37,7 @@ func (r *RegisterControllers) Post() {
 	//3.2如果错误，跳转到错误页面
 		r.TplName="error.html"
 		return
-	}
+}
 
 	//r.TplName = "register.html"
 

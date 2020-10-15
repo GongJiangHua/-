@@ -6,14 +6,14 @@ import (
 	"github.com/astaxie/beego"
 )
 
-type LoginControllers struct {
+type LoginController struct {
 	beego.Controller
 }
 
-func (l *LoginControllers) Get() {
+func (l *LoginController) Get() {
 	l.TplName="login.html"
 }
-func (l *LoginControllers) Post()  {
+func (l *LoginController) Post()  {
 	//1、解析客户端用户提交的登录数据
 	var User models.User
 	fmt.Println("正在解析。。。")

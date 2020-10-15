@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cd634243-8e0e-4d5f-85eb-c2935e17af61" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/models/uploadRecord.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/loginControllers.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/loginController.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/registerControllers.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/registerController.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/uploadFileController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/uploadFileController.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routers/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/router.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -77,25 +81,25 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="739" y="209" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1602637822894" />
-    <state width="1154" height="114" key="GridCell.Tab.0.bottom" timestamp="1602688261543">
+    <state width="1493" height="14" key="GridCell.Tab.0.bottom" timestamp="1602761296381">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1154" height="114" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1602688261543" />
-    <state width="1154" height="114" key="GridCell.Tab.0.center" timestamp="1602688261542">
+    <state width="1493" height="14" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1602761296381" />
+    <state width="1493" height="14" key="GridCell.Tab.0.center" timestamp="1602761296381">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1154" height="114" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1602688261542" />
-    <state width="1154" height="114" key="GridCell.Tab.0.left" timestamp="1602688261542">
+    <state width="1493" height="14" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1602761296381" />
+    <state width="1493" height="14" key="GridCell.Tab.0.left" timestamp="1602761296381">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1154" height="114" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1602688261542" />
-    <state width="1154" height="114" key="GridCell.Tab.0.right" timestamp="1602688261542">
+    <state width="1493" height="14" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1602761296381" />
+    <state width="1493" height="14" key="GridCell.Tab.0.right" timestamp="1602761296381">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1154" height="114" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1602688261542" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1602419442937">
+    <state width="1493" height="14" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1602761296381" />
+    <state x="430" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1602727428736">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1602419442937" />
+    <state x="430" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1602727428736" />
   </component>
 </project>
