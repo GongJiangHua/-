@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"DataCertPlatform/models"
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
@@ -87,6 +88,7 @@ func (u *UploadFileController) Post1() {
 该post方法用于处理用户在客户端提交的文件
  */
 func (u *UploadFileController)Post()  {
+	phone := u.Ctx.Request.PostFormValue("phone")
 	//用户上传的自定义标题
 	title :=u.Ctx.Request.PostFormValue("upload_title")
 	//用户上传的文件
@@ -115,7 +117,14 @@ func (u *UploadFileController)Post()  {
 	hash256.Write(filebytes)
 	hashbytes := hash256.Sum(nil)
 	fmt.Println(hex.EncodeToString(hashbytes))
-
-
+	//先查询用户id
+	user := models.User{Phone:phone}
+	user1, err := user.QueryUserIdByPhone()
+	if err!=nil {
+		u.Ctx.WriteString("抱歉，电子数据认证失败，请稍后再试！")
+		return
+	}
+	//把上传的文件作为记录保存到数据库中
+	
 	u.Ctx.WriteString("恭喜你,电子数据认证成功！！")
 }

@@ -4,6 +4,7 @@ import (
 	"DataCertPlatform/db_mysql"
 	"crypto/md5"
 	"encoding/hex"
+	"fmt"
 )
 
 type User struct {
@@ -47,4 +48,15 @@ func (u User)QueryUser()(*User,error) {
 		return nil,err
 	}
 	return &u,nil 
+}
+
+//根据phone查询用户id
+func (u User)QueryUserIdByPhone() (*User,error) {
+	row := db_mysql.Db.QueryRow("select id from user_message where user_phone = ?",u.Phone)
+	err := row.Scan(&u.Id)
+	if err != nil {
+		fmt.Println(err)
+		return nil,err
+	}
+	return &u,nil
 }
