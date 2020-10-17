@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"DataCertPlatform/models"
+	"crypto/md5"
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
@@ -10,6 +11,7 @@ import (
 	"io/ioutil"
 	"os"
 	"strings"
+	"time"
 )
 
 /*
@@ -125,6 +127,31 @@ func (u *UploadFileController)Post()  {
 		return
 	}
 	//把上传的文件作为记录保存到数据库中
-	
-	u.Ctx.WriteString("恭喜你,电子数据认证成功！！")
+	//①计算md5值
+	md5hash := md5.New()
+	fileMd5Bytes ,err := ioutil.ReadAll(saveFile)
+	md5hash.Write(fileMd5Bytes)
+	bytes := md5hash.Sum(nil)
+
+	record := models.UploadRecord{
+		UserId:    user1.Id,
+		FileName:  header.Filename,
+		FileSize:  header.Size,
+		FileCert:  hex.EncodeToString(bytes),
+		FileTitle: title,
+		CertTime:  time.Now().Unix(),
+	}
+	_,err = record.SaveRecord()
+	if err!=nil {
+		u.Ctx.WriteString("抱歉，数据保存数据库失败，请重试！！")
+		return
+	}
+	records ,err := models.QueryRecordsByUserId(user1.Id)
+	if err != nil {
+		u.Ctx.WriteString("抱歉，获取电子数据列表失败，请重新尝试！！")
+		return
+	}
+	u.Data["Records"] = records
+	u.TplName = "list_record.html"
+	//u.Ctx.WriteString("恭喜你,电子数据认证成功！！")
 }

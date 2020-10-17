@@ -16,4 +16,6 @@ func init() {
     beego.Router("/login.html",&controllers.LoginController{})
 	//用户上传文件的功能
     beego.Router("/home",&controllers.UploadFileController{})
+    //用户上传后跳转到信息界面
+    beego.Router("/record",&controllers.UploadFileController{})
 }
