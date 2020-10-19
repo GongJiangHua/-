@@ -17,6 +17,10 @@ type UploadFileController struct {
 	beego.Controller
 }
 
+func (l *UploadFileController) Get() {
+	l.TplName="home.html"
+}
+
 func (u *UploadFileController) Post1() {
 	//用户上传的自定义标题
 	title :=u.Ctx.Request.PostFormValue("upload_title")
@@ -115,7 +119,8 @@ func (u *UploadFileController)Post()  {
 	}
 	//把上传的文件作为记录保存到数据库中
 	//①计算md5值
-	fileBytes,err := utils.MD5HashReader(file)
+	saveFile , err := os.Open(saveFilePath)
+	fileBytes,err := utils.MD5HashReader(saveFile)
 
 	record := models.UploadRecord{
 		UserId:    user1.Id,
@@ -136,6 +141,7 @@ func (u *UploadFileController)Post()  {
 		return
 	}
 	u.Data["Records"] = records
+	u.Data["Phone"] = phone
 	u.TplName = "list_record.html"
 	//u.Ctx.WriteString("恭喜你,电子数据认证成功！！")
 }

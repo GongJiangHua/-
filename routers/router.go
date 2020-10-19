@@ -18,4 +18,6 @@ func init() {
     beego.Router("/home",&controllers.UploadFileController{})
     //用户上传后跳转到信息界面
     beego.Router("/record",&controllers.UploadFileController{})
+    //用户新增存证记录跳转home页面
+    beego.Router("/home.html",&controllers.UploadFileController{})
 }
