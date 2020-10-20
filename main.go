@@ -11,7 +11,7 @@ import (
 func main() {
 	block0 := blockchain.CreateGenesisBlock()
 	block1 := blockchain.NewBlock(block0.Height+1,block0.Hash,[]byte("abc"))
-	fmt.Println(block1)
+	fmt.Println("block1的hash:",block1.Hash)
 	//连接数据库
 	db_mysql.Connect()
 	//设置静态资源文件映射
