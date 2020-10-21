@@ -44,9 +44,16 @@ func SHA256HashReder(reader io.Reader) (string,error) {
 //对区块数据进行SHA256哈希计算
 func SHA256HashBlock(blockBytes []byte)[]byte  {
 	//将block结构体数据转化为[]byte类型
-
 	sha256Hash := sha256.New()
 	sha256Hash.Write(blockBytes)
 	hashbytes := sha256Hash.Sum(nil)
 	return hashbytes
+}
+
+func SHA256Pow(hashBlockByte []byte,num int64) []byte {
+	sumBytes := append(hashBlockByte, byte(num))
+	sha256Hash := sha256.New()
+	sha256Hash.Write(sumBytes)
+	hashBytes := sha256Hash.Sum(nil)
+	return hashBytes
 }
