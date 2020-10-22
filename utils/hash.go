@@ -50,10 +50,10 @@ func SHA256HashBlock(blockBytes []byte)[]byte  {
 	return hashbytes
 }
 
-func SHA256Pow(hashBlockByte []byte,num int64) []byte {
-	sumBytes := append(hashBlockByte, byte(num))
-	sha256Hash := sha256.New()
-	sha256Hash.Write(sumBytes)
-	hashBytes := sha256Hash.Sum(nil)
-	return hashBytes
-}
+//func SHA256Pow(hashBlockByte []byte,num int64) []byte {
+//	sumBytes := append(hashBlockByte, byte(num))
+//	sha256Hash := sha256.New()
+//	sha256Hash.Write(sumBytes)
+//	hashBytes := sha256Hash.Sum(nil)
+//	return hashBytes
+//}

@@ -1,8 +1,9 @@
 package blockchain
 
 import (
-	"DataCertPlatform/utils"
 	"bytes"
+	"encoding/gob"
+	_ "github.com/astaxie/beego/cache"
 	"time"
 )
 
@@ -25,18 +26,25 @@ func NewBlock(height int64,prevHash []byte,data []byte) Block {
 		TimeStemp: time.Now().Unix(),
 		PrevHash:  prevHash,
 		Data:      data,
-		//Hash:      nil,
+		//Hash:      ,
 		Version:   "0x01",
 	}
-	var sumBytes []byte
-	heightByte,_ := utils.Int64ToByte(block.Height)
-	timeStempByte,_ := utils.Int64ToByte(block.TimeStemp)
-	versionByte := utils.StringToBytes(block.Version)
-	sumBytes = bytes.Join([][]byte{
-		heightByte,timeStempByte,block.PrevHash,block.Data,versionByte},[]byte{})
+	pow := NewPow(block)
+	hashBlock,nonce := pow.Run()
+	block.Hash=hashBlock
+	block.Nonce=nonce
+	//将block结构体数据转化为[]byte类型
+	//var sumBytes []byte
+	//heightByte,_ := utils.Int64ToByte(block.Height)
+	//timeStempByte,_ := utils.Int64ToByte(block.TimeStemp)
+	//versionByte := utils.StringToBytes(block.Version)
+	//nonceByte,_ := utils.Int64ToByte(nonce)
+	////bytes.jion拼接
+	//sumBytes = bytes.Join([][]byte{
+	//	heightByte,timeStempByte,block.PrevHash,block.Data,versionByte,nonceByte},[]byte{})
 	//block.Hash
 	//调用hash计算，对区块进行sha256哈希值计算
-	block.Hash = utils.SHA256HashBlock(sumBytes)
+	//block.Hash = utils.SHA256HashBlock(sumBytes)
 	//挖矿竞争
 	return block
 }
@@ -44,4 +52,25 @@ func NewBlock(height int64,prevHash []byte,data []byte) Block {
 func CreateGenesisBlock() Block {
 	blockGenesis :=NewBlock(0,[]byte{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},nil)
 	return blockGenesis
+}
+
+/**
+对区块进行序列化
+ */
+func (b Block)Serialize() []byte {
+	buff := new(bytes.Buffer)//缓冲区
+	encoder := gob.NewEncoder(buff)
+	encoder.Encode(b)//将区块b放入到缓冲区中
+	return buff.Bytes()
+}
+
+func UnSerialize(d []byte) (*Block,error) {
+	var block Block
+	decoder := gob.NewDecoder(bytes.NewReader(d))
+	err := decoder.Decode(&block)
+	if err != nil {
+		return nil,err
+	}
+	return &block,nil
+
 }
