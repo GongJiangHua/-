@@ -63,7 +63,7 @@ func (b Block)Serialize() []byte {
 	encoder.Encode(b)//将区块b放入到缓冲区中
 	return buff.Bytes()
 }
-
+//反序列化u
 func UnSerialize(d []byte) (*Block,error) {
 	var block Block
 	decoder := gob.NewDecoder(bytes.NewReader(d))
