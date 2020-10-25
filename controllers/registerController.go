@@ -38,7 +38,7 @@ func (r *RegisterController) Post() {
 		r.TplName="error.html"
 		return
 }
-
+	//
 	//r.TplName = "register.html"
 
 }
