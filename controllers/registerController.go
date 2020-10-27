@@ -10,7 +10,6 @@ type RegisterController struct {
 	beego.Controller
 }
 
-
 func (r *RegisterController) Post() {
 
 	//1.解析用户提交的请求数据

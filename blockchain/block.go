@@ -22,7 +22,7 @@ type Block struct {
 //创建一个新区块
 func NewBlock(height int64,prevHash []byte,data []byte) Block {
 	block := Block{
-		Height:    height+1,
+		Height:    height,
 		TimeStemp: time.Now().Unix(),
 		PrevHash:  prevHash,
 		Data:      data,
@@ -64,7 +64,7 @@ func (b Block)Serialize() []byte {
 	return buff.Bytes()
 }
 //反序列化将硬盘中的区块内容放入内存中
-func UnSerialize(d []byte) (*Block,error) {
+func DeSerialize(d []byte) (*Block,error) {
 	var block Block
 	decoder := gob.NewDecoder(bytes.NewReader(d))
 	err := decoder.Decode(&block)
@@ -72,5 +72,4 @@ func UnSerialize(d []byte) (*Block,error) {
 		return nil,err
 	}
 	return &block,nil
-
 }

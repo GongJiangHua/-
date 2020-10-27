@@ -7,7 +7,7 @@ import (
 	"math/big"
 )
 
-const DIFFICULTY  = 10
+const DIFFICULTY  = 5
 type ProofOfWork struct {
 	Target *big.Int//系统的目标值
 	Block Block//要找到nonce值对应的区块

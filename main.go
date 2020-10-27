@@ -12,10 +12,18 @@ func main() {
 	block0 := blockchain.CreateGenesisBlock()
 	fmt.Println(block0)
 	fmt.Printf("block0的hash值:%x\n",block0.Hash)
+	fmt.Printf("block0的高度:%x\n",block0.Height)
 	block1 := blockchain.NewBlock(block0.Height+1,block0.Hash,nil)
 	fmt.Printf("block1的hash值:%x\n",block1.Hash)
 	fmt.Printf("block0的prev hash值:%x\n",block1.PrevHash)
-	blockchain.UnSerialize()
+	block0Bytes := block0.Serialize()
+	fmt.Println("block0通过序列化后：",block0Bytes)
+	deBlock0,err := blockchain.DeSerialize(block0Bytes)
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+	fmt.Println("反序列化后的区块block0的高度：",deBlock0.Height)
 	//1、序列化:
 		//将数据从内存中形式转化为可以持久化存储在硬盘上或者在网络上传播
 	//block1 := blockchain.NewBlock(block0.Height+1,block0.Hash,[]byte("abc"))
