@@ -19,32 +19,42 @@ type BlockChain struct {
 创建一条区块链
  */
 func NewBlockChain() BlockChain {
-	//创世区块
-	genesis :=CreateGenesisBlock()
+	var bc BlockChain
+	//先打开文件
 	db, err := bolt.Open(BLOCKCHAIN_NAME,0600,nil)
-	if err != nil {
-		panic(err.Error())
-	}
-	bc := BlockChain{
-		LashHash: genesis.Hash,
-		BoltDb:   db,
-	}
-	//将创世区块放入文件中
-	db.Update(func(tx *bolt.Tx) error {
-		bucket ,err :=tx.CreateBucket([]byte(BUCKET_NAME))
-		if err!= nil {
-			panic(err.Error())
+	//查看chain.db文件
+	db.View(func(tx *bolt.Tx) error {
+		bucket := tx.Bucket([]byte("BUCKET_NAME"))
+		if bucket==nil {
+			bucket ,err = tx.CreateBucket([]byte("BUCKET_NAME"))
+			if err != nil {
+				panic(err.Error())
+			}
 		}
-		//序列化
-		genesisbytes := genesis.Serialize()
-		//把创世区块放入桶中
-		bucket.Put(genesis.Hash,genesisbytes)
-		//更新最新区块的hash值，方便查找
-		bucket.Put([]byte(LAST_HASH),genesis.Hash)
+		lastHash := bucket.Get([]byte(LAST_HASH))
+		if len(lastHash)==0 {//没有lasthash,弄一个创世区块
+			//创世区块
+			genesis :=CreateGenesisBlock()
+			genesisBytes := genesis.Serialize()
+			bucket.Put(genesis.Hash,genesisBytes)
+			bucket.Put([]byte(LAST_HASH),genesis.Hash)
+			bc  = BlockChain{
+				LashHash: genesis.Hash,
+				BoltDb:   db,
+			}
+		}else {
+			lasthash1 := bucket.Get([]byte(LAST_HASH))
+			bc = BlockChain{
+				LashHash: lasthash1,
+				BoltDb:   db,
+			}
+		}
 		return nil
 	})
 	return bc
 }
+
+
 //保存数据到区块链中: 先生成一个新区块,然后将新区块添加到区块链中
 func (bc BlockChain)SaveBlock(date []byte)  {
 	//1、从文件当中读取到最新的区块
@@ -52,8 +62,8 @@ func (bc BlockChain)SaveBlock(date []byte)  {
 	var lastblock *Block
 	db.View(func(tx *bolt.Tx) error {
 		bucket := tx.Bucket([]byte(BUCKET_NAME))
-		lastHash := bucket.Get([]byte(LAST_HASH))
-		lastBlockbytes := bucket.Get(lastHash)
+		//lastHash := bucket.Get([]byte(LAST_HASH))
+		lastBlockbytes := bucket.Get(bc.LashHash)
 		//反序列化
 		lastblock,_= DeSerialize(lastBlockbytes)
 		return nil
@@ -64,10 +74,11 @@ func (bc BlockChain)SaveBlock(date []byte)  {
 		bucket := tx.Bucket([]byte(BUCKET_NAME))
 		//序列化
 		newBlockbytes := newBlock.Serialize()
-		//存储新区块
+		//把新创建的区块存储到文件中
 		bucket.Put(newBlock.Hash,newBlockbytes)
-		//更新lasthash的值
+		//更新lasthash的值，更新为最新存储的区块的区块hash值
 		bucket.Put([]byte(LAST_HASH),newBlock.Hash)
+		bc.LashHash = newBlock.Hash
 		return nil
 	})
 }
