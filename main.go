@@ -4,11 +4,11 @@ import (
 	"DataCertPlatform/blockchain"
 	"DataCertPlatform/db_mysql"
 	_ "DataCertPlatform/routers"
-	"fmt"
 	"github.com/astaxie/beego"
 )
 
 func main() {
+	blockchain.NewBlockChain()
 	//block0 := blockchain.CreateGenesisBlock()
 	//fmt.Println(block0)
 	//fmt.Printf("block0的hash值:%x\n",block0.Hash)
@@ -30,10 +30,6 @@ func main() {
 	//fmt.Println("block1的hash:",block1.Hash)
 	//blockchain.NewPow(block1)
 	//连接数据库
-	bc := blockchain.NewBlockChain()//封装
-	fmt.Printf("创世区块的hash:%x\n",bc.LashHash)
-	bc.SaveBlock([]byte("用户的信息"))
-	return
 	db_mysql.Connect()
 	//设置静态资源文件映射
 	beego.SetStaticPath("/js","./static/js")
