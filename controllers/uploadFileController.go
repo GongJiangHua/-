@@ -121,13 +121,13 @@ func (u *UploadFileController)Post()  {
 	//把上传的文件作为记录保存到数据库中
 	//①计算md5值
 	saveFile , err := os.Open(saveFilePath)
-	fileBytes,err := utils.MD5HashReader(saveFile)
+	fileHash,err := utils.MD5HashReader(saveFile)
 
 	record := models.UploadRecord{
 		UserId:    user1.Id,
 		FileName:  header.Filename,
 		FileSize:  header.Size,
-		FileCert:  fileBytes,
+		FileCert:  fileHash,
 		FileTitle: title,
 		CertTime:  time.Now().Unix(),
 	}
@@ -137,7 +137,12 @@ func (u *UploadFileController)Post()  {
 		return
 	}
 	//③ 将用户上传的文件的md5值和sha256值保存到区块链上，即数据上链
-	blockchain.CHAIN.SaveBlock([]byte(fileBytes))
+	Block,err :=blockchain.CHAIN.SaveBlock([]byte(fileHash))
+	if err!=nil {
+	u.Ctx.WriteString("抱歉，数据认证保存失败："+err.Error())
+		return
+	}
+	fmt.Println("恭喜，已经保存到区块链中，区块的高度为：",Block.Height)
 	records ,err := models.QueryRecordsByUserId(user1.Id)
 	if err != nil {
 		u.Ctx.WriteString("抱歉，获取电子数据列表失败，请重新尝试！！")

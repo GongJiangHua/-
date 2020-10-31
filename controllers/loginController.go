@@ -31,6 +31,7 @@ func (l *LoginController) Post()  {
 		l.Ctx.WriteString("抱歉，用户登录失败，请重试")
 		return
 	}
+
 	fmt.Println(u)
 		//l.Ctx.WriteString("欢迎来到首界面！！")
 	//4、根据查询结果返回客户端相应的信息或者页面跳转

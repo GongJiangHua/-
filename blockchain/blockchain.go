@@ -162,3 +162,40 @@ func (bc BlockChain)QueryBlockByHeight(height int64) (*Block,error) {
 	})
 	return eachBlock,errs
 }
+/**
+	该方法用于根据用户输入的认证号查询到对应的区块信息
+ */
+func (bc BlockChain)QueryBlockByCertId (cert_id string) (*Block,error){
+		db := bc.BoltDb
+		var err error
+		var block *Block
+		db.View(func(tx *bolt.Tx) error {
+			bucket := tx.Bucket([]byte(BUCKET_NAME))
+			if bucket==nil {
+				err = errors.New("查询链上数据发生错误，请重试！")
+				return
+			}
+			eachHash := bc.LashHash
+			eachBig := new(big.Int)
+			zeroBig := big.NewInt(0)
+			for{
+				eachBlockBytes := bucket.Get(eachHash)
+				eachBlock,err := DeSerialize(eachBlockBytes)
+				if err!=nil {
+					break
+				}
+				//将遍历到的区块中的数据跟用户提供的认证号相比较
+				if string(eachBlock.Data)==cert_id {
+					block=eachBlock
+					break
+				}
+				eachBig.SetBytes(eachBlock.PrevHash)
+				if eachBig.Cmp(zeroBig)==0 {
+					break
+				}
+				eachHash = eachBlock.PrevHash
+			}
+			return nil
+		})
+		return block,nil
+}
