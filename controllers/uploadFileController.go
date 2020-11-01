@@ -18,8 +18,71 @@ type UploadFileController struct {
 	beego.Controller
 }
 
-func (l *UploadFileController) Get() {
-	l.TplName="home.html"
+func (u *UploadFileController) Get() {
+	u.TplName = "list_record.html"
+}
+
+func (u *UploadFileController) Post()  {
+	phone := u.Ctx.Request.PostFormValue("phone")
+	//用户上传的自定义标题
+	title :=u.Ctx.Request.PostFormValue("upload_title")
+	//用户上传的文件
+	file,header,err :=u.GetFile("file")
+	fmt.Println(title)
+	if err != nil {
+		u.Ctx.WriteString("抱歉，文件保存失败，请重试！！")
+		return
+	}
+	defer file.Close()
+	//使用io包提供的方法保存文件
+	saveFilePath  := "static/upload/"+header.Filename
+	_,err =utils.SaveFile(saveFilePath,file)
+	if err!= nil{
+		u.Ctx.WriteString("文件保存失败，请重试！！")
+		return
+	}
+	hashBytes,err := utils.MD5HashReader(file)
+	fmt.Println(hashBytes)
+	//先查询用户id
+	user := models.User{Phone:phone}
+	user1, err := user.QueryUserIdByPhone()
+	if err!=nil {
+		u.Ctx.WriteString("抱歉，电子数据认证失败，请稍后再试！")
+		return
+	}
+	//把上传的文件作为记录保存到数据库中
+	//①计算md5值
+	saveFile , err := os.Open(saveFilePath)
+	fileHash,err := utils.MD5HashReader(saveFile)
+
+	record := models.UploadRecord{
+		UserId:    user1.Id,
+		FileName:  header.Filename,
+		FileSize:  header.Size,
+		FileCert:  fileHash,
+		FileTitle: title,
+		CertTime:  time.Now().Unix(),
+	}
+	_,err = record.SaveRecord()
+	if err!=nil {
+		u.Ctx.WriteString("抱歉，数据保存数据库失败，请重试！！")
+		return
+	}
+	//③ 将用户上传的文件的md5值和sha256值保存到区块链上，即数据上链
+	Block,err :=blockchain.CHAIN.SaveBlock([]byte(fileHash))
+	if err!=nil {
+		u.Ctx.WriteString("抱歉，数据认证保存失败："+err.Error())
+		return
+	}
+	fmt.Println("恭喜，已经保存到区块链中，区块的高度为：",Block.Height)
+	records ,err := models.QueryRecordsByUserId(user1.Id)
+	if err != nil {
+		u.Ctx.WriteString("抱歉，获取电子数据列表失败，请重新尝试！！")
+		return
+	}
+	u.Data["Records"] = records
+	u.TplName = "list_record.html"
+	//u.Ctx.WriteString("恭喜你,电子数据认证成功！！")
 }
 
 func (u *UploadFileController) Post1() {
@@ -90,66 +153,3 @@ func (u *UploadFileController) Post1() {
 /*
 该post方法用于处理用户在客户端提交的文件
  */
-func (u *UploadFileController)Post()  {
-	phone := u.Ctx.Request.PostFormValue("phone")
-	//用户上传的自定义标题
-	title :=u.Ctx.Request.PostFormValue("upload_title")
-	//用户上传的文件
-	file,header,err :=u.GetFile("file")
-	fmt.Println(title)
-	if err != nil {
-		u.Ctx.WriteString("抱歉，文件保存失败，请重试！！")
-		return
-	}
-	defer file.Close()
-	//使用io包提供的方法保存文件
-	saveFilePath  := "static/upload/"+header.Filename
-	_,err =utils.SaveFile(saveFilePath,file)
-	if err!= nil{
-		u.Ctx.WriteString("文件保存失败，请重试！！")
-		return
-	}
-	hashBytes,err := utils.MD5HashReader(file)
-	fmt.Println(hashBytes)
-	//先查询用户id
-	user := models.User{Phone:phone}
-	user1, err := user.QueryUserIdByPhone()
-	if err!=nil {
-		u.Ctx.WriteString("抱歉，电子数据认证失败，请稍后再试！")
-		return
-	}
-	//把上传的文件作为记录保存到数据库中
-	//①计算md5值
-	saveFile , err := os.Open(saveFilePath)
-	fileHash,err := utils.MD5HashReader(saveFile)
-
-	record := models.UploadRecord{
-		UserId:    user1.Id,
-		FileName:  header.Filename,
-		FileSize:  header.Size,
-		FileCert:  fileHash,
-		FileTitle: title,
-		CertTime:  time.Now().Unix(),
-	}
-	_,err = record.SaveRecord()
-	if err!=nil {
-		u.Ctx.WriteString("抱歉，数据保存数据库失败，请重试！！")
-		return
-	}
-	//③ 将用户上传的文件的md5值和sha256值保存到区块链上，即数据上链
-	Block,err :=blockchain.CHAIN.SaveBlock([]byte(fileHash))
-	if err!=nil {
-	u.Ctx.WriteString("抱歉，数据认证保存失败："+err.Error())
-		return
-	}
-	fmt.Println("恭喜，已经保存到区块链中，区块的高度为：",Block.Height)
-	records ,err := models.QueryRecordsByUserId(user1.Id)
-	if err != nil {
-		u.Ctx.WriteString("抱歉，获取电子数据列表失败，请重新尝试！！")
-		return
-	}
-	u.Data["Records"] = records
-	u.Data["Phone"] = phone
-	u.TplName = "list_record.html"
-	//u.Ctx.WriteString("恭喜你,电子数据认证成功！！")
-}

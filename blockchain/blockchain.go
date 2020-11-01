@@ -22,8 +22,8 @@ type BlockChain struct {
 /**
 创建一条区块链
  */
-func NewBlockChain() BlockChain {
-	var bc BlockChain
+func NewBlockChain() *BlockChain {
+	var bc *BlockChain
 	//先打开文件
 	db, err := bolt.Open(BLOCKCHAIN_NAME,0600,nil)
 	//查看chain.db文件
@@ -42,19 +42,20 @@ func NewBlockChain() BlockChain {
 			genesisBytes := genesis.Serialize()
 			bucket.Put(genesis.Hash,genesisBytes)
 			bucket.Put([]byte(LAST_HASH),genesis.Hash)
-			bc  = BlockChain{
+			bc  = &BlockChain{
 				LashHash: genesis.Hash,
 				BoltDb:   db,
 			}
 		}else {
 			lasthash1 := bucket.Get([]byte(LAST_HASH))
-			bc = BlockChain{
+			bc = &BlockChain{
 				LashHash: lasthash1,
 				BoltDb:   db,
 			}
 		}
 		return nil
 	})
+	CHAIN=bc
 	return bc
 }
 
@@ -173,7 +174,7 @@ func (bc BlockChain)QueryBlockByCertId (cert_id string) (*Block,error){
 			bucket := tx.Bucket([]byte(BUCKET_NAME))
 			if bucket==nil {
 				err = errors.New("查询链上数据发生错误，请重试！")
-				return
+				return err
 			}
 			eachHash := bc.LashHash
 			eachBig := new(big.Int)

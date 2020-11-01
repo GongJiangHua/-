@@ -20,4 +20,6 @@ func init() {
     beego.Router("/record",&controllers.UploadFileController{})
     //用户新增存证记录跳转home页面
     beego.Router("/home.html",&controllers.UploadFileController{})
+    //查看认证数据证书页面
+    beego.Router("/cert_detail.html",&controllers.CertDetailController{})
 }

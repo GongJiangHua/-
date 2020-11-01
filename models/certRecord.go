@@ -27,7 +27,9 @@ func (c CertRecord)Serialize()([]byte,error)  {
 	err := gob.NewEncoder(buff).Encode(c)
 	return buff.Bytes(),err
 }
-
-func DeserializeCertRecord(data []byte)(CertRecord,error)  {
-	err :=
+//该函数用于反序列化生成一个CertRecord结构体
+func DeserializeCertRecord(data []byte)(*CertRecord,error)  {
+	var certRecord *CertRecord
+	err := gob.NewDecoder(bytes.NewReader(data)).Decode(&certRecord)
+	return certRecord,err
 }
