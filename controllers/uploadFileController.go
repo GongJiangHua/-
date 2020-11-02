@@ -68,8 +68,27 @@ func (u *UploadFileController) Post()  {
 		u.Ctx.WriteString("抱歉，数据保存数据库失败，请重试！！")
 		return
 	}
+	user = models.User{
+		Id:       0,
+		Phone:    "",
+		Password: "",
+		Name:     "",
+		Card:     "",
+		Sex:      "",
+	}
 	//③ 将用户上传的文件的md5值和sha256值保存到区块链上，即数据上链
-	Block,err :=blockchain.CHAIN.SaveBlock([]byte(fileHash))
+	certRecord := models.CertRecord{
+		CertId:   []byte(hashBytes),
+		CertHash: []byte(fileHash),
+		CertName: user.Name,
+		Phone:    user.Phone,
+		CertCard: user.Card,
+		FileName: header.Filename,
+		FileSize: header.Size,
+		CertTime: time.Now().Unix(),
+	}
+	certBytes ,_ := certRecord.Serialize()
+	Block,err :=blockchain.CHAIN.SaveBlock([]byte(certBytes))
 	if err!=nil {
 		u.Ctx.WriteString("抱歉，数据认证保存失败："+err.Error())
 		return

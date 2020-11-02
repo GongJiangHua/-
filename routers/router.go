@@ -22,4 +22,6 @@ func init() {
     beego.Router("/home.html",&controllers.UploadFileController{})
     //查看认证数据证书页面
     beego.Router("/cert_detail.html",&controllers.CertDetailController{})
+    //用户实名认证
+    beego.Router("/user_kyc",&controllers.UserKycController{})
 }

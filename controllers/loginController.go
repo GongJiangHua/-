@@ -4,6 +4,7 @@ import (
 	"DataCertPlatform/models"
 	"fmt"
 	"github.com/astaxie/beego"
+	"strings"
 )
 
 type LoginController struct {
@@ -31,7 +32,12 @@ func (l *LoginController) Post()  {
 		l.Ctx.WriteString("抱歉，用户登录失败，请重试")
 		return
 	}
-
+	//3.1判断用户是否已经实名认证，如果没有实名认证，则跳转到认证页面
+	if  strings.TrimSpace(u.Name) ==""||strings.TrimSpace(u.Card)==""{//两者有其一说明没有实名认证
+		l.Data["Phone"]=u.Phone
+		l.TplName= "user_kyc.html"
+		return
+	}
 	fmt.Println(u)
 		//l.Ctx.WriteString("欢迎来到首界面！！")
 	//4、根据查询结果返回客户端相应的信息或者页面跳转

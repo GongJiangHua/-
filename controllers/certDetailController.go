@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"DataCertPlatform/blockchain"
+	"DataCertPlatform/models"
 	"fmt"
 	"github.com/astaxie/beego"
 )
@@ -27,7 +28,10 @@ func (c *CertDetailController) Get() {
 		return
 	}
 	fmt.Println("查询到区块的高度：",block.Height)
-	c.Data["CertId"]=string(block.Data)
+	//反序列化
+	certRecord,err := models.DeserializeCertRecord(block.Data)
+	//结构体
+	c.Data["CertRecord"]=certRecord
 	//跳转证书详情页面
 	c.TplName="cert_detail.html"
 }

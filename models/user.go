@@ -10,6 +10,9 @@ type User struct {
 	Id int `form:"id"`
 	Phone string `form:"phone"`
 	Password string `form:"password"`
+	Name string `form:"name"`
+	Card string `form:"card"`
+	Sex string `form:"sex"`
 }
 
 /**
@@ -34,9 +37,9 @@ func (u User)AddUser() (int64, error) {
 //登录页面用户登录进行数据查询
 func (u User)QueryUser()(*User,error) {
 	u.Password = utils.MD5HashString(u.Password)
-	row :=db_mysql.Db.QueryRow("select user_phone from user_message where user_phone = ? and user_pwd = ?",
+	row :=db_mysql.Db.QueryRow("select user_phone, name, card from user_message where user_phone = ? and user_pwd = ?",
 		u.Phone,u.Password)
-	err := row.Scan(&u.Phone)
+	err := row.Scan(&u.Phone,&u.Name,&u.Card)
 	if err!=nil {
 		return nil,err
 	}
@@ -52,4 +55,16 @@ func (u User)QueryUserIdByPhone() (*User,error) {
 		return nil,err
 	}
 	return &u,nil
+}
+
+func (u User)UpdataUser() (int64,error) {
+	rs,err := db_mysql.Db.Exec("update user_message set name = ?,card = ?,sex = ? where user_phone=?",u.Name,u.Card,u.Sex,u.Phone)
+	if err != nil {
+		return -1,err
+	}
+	id,err := rs.RowsAffected()
+	if err != nil {
+		return -1,err
+	}
+	return id,nil
 }
