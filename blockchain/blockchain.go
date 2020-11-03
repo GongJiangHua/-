@@ -1,6 +1,7 @@
 package blockchain
 
 import (
+	"DataCertPlatform/models"
 	"github.com/bolt"
 	"golang.org/x/tools/go/ssa/interp/testdata/src/errors"
 	"math/big"
@@ -186,7 +187,12 @@ func (bc BlockChain)QueryBlockByCertId (cert_id string) (*Block,error){
 					break
 				}
 				//将遍历到的区块中的数据跟用户提供的认证号相比较
-				if string(eachBlock.Data)==cert_id {
+				record,err := models.DeserializeCertRecord(eachBlock.Data)
+				if err != nil {
+					err = errors.New("查询链上数据失败，请重试！！")
+					break
+				}
+				if string(record.CertId)==cert_id {
 					block=eachBlock
 					break
 				}

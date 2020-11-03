@@ -44,8 +44,7 @@ func (u *UploadFileController) Post()  {
 	hashBytes,err := utils.MD5HashReader(file)
 	fmt.Println(hashBytes)
 	//先查询用户id
-	user := models.User{Phone:phone}
-	user1, err := user.QueryUserIdByPhone()
+	user1, err := models.User{Phone: phone}.QueryUserIdByPhone()
 	if err!=nil {
 		u.Ctx.WriteString("抱歉，电子数据认证失败，请稍后再试！")
 		return
@@ -68,14 +67,10 @@ func (u *UploadFileController) Post()  {
 		u.Ctx.WriteString("抱歉，数据保存数据库失败，请重试！！")
 		return
 	}
-	user = models.User{
-		Id:       0,
-		Phone:    "",
-		Password: "",
-		Name:     "",
-		Card:     "",
-		Sex:      "",
+	user := &models.User{
+		Phone:    phone,
 	}
+	user,_ = user.QueryUserIdByPhone()
 	//③ 将用户上传的文件的md5值和sha256值保存到区块链上，即数据上链
 	certRecord := models.CertRecord{
 		CertId:   []byte(hashBytes),
@@ -87,6 +82,7 @@ func (u *UploadFileController) Post()  {
 		FileSize: header.Size,
 		CertTime: time.Now().Unix(),
 	}
+	fmt.Println("certRecord的值为",certRecord)
 	certBytes ,_ := certRecord.Serialize()
 	Block,err :=blockchain.CHAIN.SaveBlock([]byte(certBytes))
 	if err!=nil {
@@ -99,6 +95,7 @@ func (u *UploadFileController) Post()  {
 		u.Ctx.WriteString("抱歉，获取电子数据列表失败，请重新尝试！！")
 		return
 	}
+	//fmt.Println("Records的值为：",records)
 	u.Data["Records"] = records
 	u.TplName = "list_record.html"
 	//u.Ctx.WriteString("恭喜你,电子数据认证成功！！")

@@ -48,8 +48,9 @@ func (u User)QueryUser()(*User,error) {
 
 //根据phone查询用户id
 func (u User)QueryUserIdByPhone() (*User,error) {
-	row := db_mysql.Db.QueryRow("select id from user_message where user_phone = ?",u.Phone)
-	err := row.Scan(&u.Id)
+	row := db_mysql.Db.QueryRow("select id,name,card,phone from user_message where user_phone = ?",u.Phone)
+	var user User
+	err := row.Scan(&user.Id,&user.Name,&user.Card,&user.Phone)
 	if err != nil {
 		fmt.Println(err)
 		return nil,err
