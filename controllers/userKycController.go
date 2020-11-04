@@ -34,4 +34,4 @@ func (u *UserKycController)Post()  {
 	}
 	//4、跳转或者处理结果
 	u.TplName= "home.html"
-}
+}//
