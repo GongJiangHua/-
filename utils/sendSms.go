@@ -2,9 +2,8 @@ package utils
 
 import (
 	"encoding/json"
+	"github.com/aliyun/alibaba-cloud-sdk-go/services/dysmsapi"
 	"github.com/astaxie/beego"
-	"github.com/alibaba-cloud-sdk-go/services/dysmsapi"
-	"github.com/astaxie/beego/config"
 )
 
 /**
@@ -25,14 +24,14 @@ type SmsResult struct {
 
 func SendSms(phone string,code string,templateType string)(*SmsResult,error) {
 	config := beego.AppConfig
-	accessKey := config.String(accessKey)
-	acceaaKeySecret:=config.String(acceaaKeySecret)
-	client,err := dysmsapi.NewClientWithAccessKey("cn-hangzhou",accessKey,acceaaKeySecret)
+	AccessKey := config.String("accessKey")
+	AcceaaKeySecret:=config.String("acceaaKeySecret")
+	client,err := dysmsapi.NewClientWithAccessKey("cn-hangzhou",AccessKey,AcceaaKeySecret)
 	if err != nil {
 		return nil,err
 	}
 	//batch 批量，批次
-	request := dysmaapi.CreateSendSmsRequest()
+	request := dysmsapi.CreateSendSmsRequest()
 	request.PhoneNumbers = phone//指定要发送的那个目标手机号
 	request.SignName = "线上餐厅"//签名信息
 	request.TemplateCode = templateType //指定短信模板
@@ -46,7 +45,7 @@ func SendSms(phone string,code string,templateType string)(*SmsResult,error) {
 		return nil,err
 	}
 	//Biz : business 商业，业务
-	smsResult = &SmsResult{
+	smsResult := &SmsResult{
 		Bizid:     response.BizId,
 		Code:      response.Code,
 		Message:   response.Message,
@@ -55,6 +54,6 @@ func SendSms(phone string,code string,templateType string)(*SmsResult,error) {
 	return smsResult,nil
 }
 
-func GenRandCode(width int)string  {
-
-}
+//func GenRandCode(width int)string  {
+//
+//}

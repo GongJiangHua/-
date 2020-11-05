@@ -28,7 +28,7 @@ func (u *UploadFileController) Post()  {
 	title :=u.Ctx.Request.PostFormValue("upload_title")
 	//用户上传的文件
 	file,header,err :=u.GetFile("file")
-	fmt.Println(title)
+	fmt.Println("上传文件的标题：",title)
 	if err != nil {
 		u.Ctx.WriteString("抱歉，文件保存失败，请重试！！")
 		return
@@ -92,14 +92,24 @@ func (u *UploadFileController) Post()  {
 	fmt.Println("恭喜，已经保存到区块链中，区块的高度为：",Block.Height)
 	records ,err := models.QueryRecordsByUserId(user1.Id)
 	if err != nil {
+
 		u.Ctx.WriteString("抱歉，获取电子数据列表失败，请重新尝试！！")
 		return
 	}
-	//fmt.Println("Records的值为：",records)
+	fmt.Println("Records的值为：",records)
 	u.Data["Records"] = records
 	u.TplName = "list_record.html"
 	//u.Ctx.WriteString("恭喜你,电子数据认证成功！！")
 }
+
+
+
+
+
+
+
+
+
 
 func (u *UploadFileController) Post1() {
 	//用户上传的自定义标题

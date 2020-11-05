@@ -38,7 +38,7 @@ func (l *LoginController) Post()  {
 		l.TplName= "user_kyc.html"
 		return
 	}
-	fmt.Println(u)
+	fmt.Println("login里的u:",u)
 		//l.Ctx.WriteString("欢迎来到首界面！！")
 	//4、根据查询结果返回客户端相应的信息或者页面跳转
 	l.Data["Phone"] = u.Phone//动态数据设置
