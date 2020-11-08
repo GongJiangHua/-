@@ -20,8 +20,9 @@ type SmsResult struct {
 	Code string
 	Message string
 	Requestid string
-} 
+}
 
+const SMS_TLP_REGISTER  = ""
 func SendSms(phone string,code string,templateType string)(*SmsResult,error) {
 	config := beego.AppConfig
 	AccessKey := config.String("accessKey")
@@ -53,7 +54,17 @@ func SendSms(phone string,code string,templateType string)(*SmsResult,error) {
 	}
 	return smsResult,nil
 }
+/**
+	生成一个位数为width的随机数验证码，并将验证码返回
+ */
+func GenRandCode(width int)string  {
+	numeric := [10]byte{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	r := len(numeric)
+	rand.Seed(time.Now().UnixNano())
 
-//func GenRandCode(width int)string  {
-//
-//}
+	var sb strings.Builder
+	for i := 0; i < width; i++ {
+		fmt.Fprintf(&sb, "%d", numeric[ rand.Intn(r) ])
+	}
+	return sb.String()
+}
