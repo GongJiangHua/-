@@ -2,8 +2,12 @@ package utils
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/dysmsapi"
 	"github.com/astaxie/beego"
+	"math/rand"
+	"strings"
+	"time"
 )
 
 /**
@@ -22,7 +26,7 @@ type SmsResult struct {
 	Requestid string
 }
 
-const SMS_TLP_REGISTER  = ""
+const SMS_TLP_REGISTER  = "SMS_205393604"
 func SendSms(phone string,code string,templateType string)(*SmsResult,error) {
 	config := beego.AppConfig
 	AccessKey := config.String("accessKey")
