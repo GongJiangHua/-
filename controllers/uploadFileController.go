@@ -50,7 +50,7 @@ func (u *UploadFileController) Post()  {
 		return
 	}
 	//把上传的文件作为记录保存到数据库中
-	//①计算md5值
+	//①计算md5
 	saveFile , err := os.Open(saveFilePath)
 	fileHash,err := utils.MD5HashReader(saveFile)
 
