@@ -42,6 +42,7 @@ func (s *SendSmsController)Post()  {
 		Message:   result.Message,
 		TimeStamp: time.Now().Unix(),
 	}
+	fmt.Println("发送时的信息：",smsRecord)
 	_,err = smsRecord.SaveSmsRecord()
 	if err != nil {
 		s.Ctx.WriteString("发送短信的信息保存失败，请重试！")
@@ -50,5 +51,5 @@ func (s *SendSmsController)Post()  {
 	//保存成功
 	s.Data["Phone"] =smsLogin.Phone
 	s.Data["BizId"]=smsRecord.BizId
-	s.TplName="login.html"
+	s.TplName="login_sms_second.html"
 }

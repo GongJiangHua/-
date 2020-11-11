@@ -23,3 +23,7 @@ func (s SmsRecord)SaveSmsRecord() (int64,error) {
 	}
 	return res.RowsAffected()
 }
+
+/**
+	根据用户提交的手机号和短信验证码查询验证码是否正确
+ */

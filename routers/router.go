@@ -28,4 +28,5 @@ func init() {
     beego.Router("/login_sms.html",&controllers.LoginSmsController{})
     //发送验证码
     beego.Router("/send_sms",&controllers.SendSmsController{})
+    beego.Router("/login_sms",&controllers.SendSmsController{})
 }
