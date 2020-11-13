@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cd634243-8e0e-4d5f-85eb-c2935e17af61" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/views/login_sms_second.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blockchain.db" beforeDir="false" afterPath="$PROJECT_DIR$/blockchain.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/loginSmsController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/loginSmsController.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/sendSmsController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/sendSmsController.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/smsLogin.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/smsLogin.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/smsRecord.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/smsRecord.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/router.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,10 +79,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="488" y="56" key="#go_build_DataCertPlatform/0.0.1536.824@0.0.1536.824" timestamp="1602293292704" />
-    <state x="739" y="209" key="FileChooserDialogImpl" timestamp="1605093630910">
+    <state x="739" y="209" key="FileChooserDialogImpl" timestamp="1605234344417">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="739" y="209" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1605093630910" />
+    <state x="739" y="209" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1605234344417" />
     <state width="1493" height="211" key="GridCell.Tab.0.bottom" timestamp="1605105058152">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
