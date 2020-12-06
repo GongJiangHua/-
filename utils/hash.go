@@ -57,4 +57,3 @@ func SHA256HashBlock(blockBytes []byte)[]byte  {
 //	hashBytes := sha256Hash.Sum(nil)
 //	return hashBytes
 //}
-//
