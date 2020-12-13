@@ -73,4 +73,3 @@ func DeSerialize(d []byte) (*Block,error) {
 	}
 	return &block,nil
 }
-//
