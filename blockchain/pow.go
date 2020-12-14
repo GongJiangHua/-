@@ -55,3 +55,4 @@ func (p ProofOfWork)Run() ([]byte,int64) {
 	//将找到的符合规则的nonce值返回
 	return blockHash,nonce
 }
+//
