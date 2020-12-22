@@ -1,14 +1,13 @@
 package main
 
 import (
-	"DataCertPlatform/blockchain"
 	"DataCertPlatform/db_mysql"
 	_ "DataCertPlatform/routers"
 	"github.com/astaxie/beego"
 )
 
 func main() {
-	blockchain.NewBlockChain()
+	//blockchain.NewBlockChain()
 	//block0 := blockchain.CreateGenesisBlock()
 	//fmt.Println(block0)
 	//fmt.Printf("block0的hash值:%x\n",block0.Hash)
