@@ -44,3 +44,4 @@ func (l *LoginController) Post()  {
 	l.Data["Phone"] = u.Phone//动态数据设置
 	l.TplName = "home.html"
 }
+//
