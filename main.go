@@ -36,4 +36,3 @@ func main() {
 	beego.SetStaticPath("/img","./static/img")
 	beego.Run()
 }
-//git status
